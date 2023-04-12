@@ -89,7 +89,10 @@ export default {
     },
     zc() {
       if (this.checked) {
+        // 判断复选框选中
         if (this.cs.password === this.qrpassword) {
+          // 判断两次密码一致
+          // 判断完成发送请求
           this.$http({
             method: "post",
             url: "/api/user/passport/register",
@@ -98,6 +101,7 @@ export default {
             console.log(res);
             if (res.code === 200) {
               alert("登录成功，三秒后跳转到登录界面");
+              
               setTimeout(() => {
                 this.$router.push('/login')
               }, 3000);
