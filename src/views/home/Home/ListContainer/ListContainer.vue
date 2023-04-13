@@ -142,6 +142,8 @@ export default {
 		}
 	},
 }
+import  '../../../../../public/swiper.min.css'
+import  '../../../../../public/swiper.min.js'
 </script>
 
 <style lang="less" scoped>

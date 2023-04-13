@@ -80,13 +80,12 @@
         url:'/api/user/passport/register',
         data:this.regForm
       }).then((res)=>{
+        console.log(res);
         if(res.data.code==200){
-          this.$message.success('注册成功,即将跳转至登陆界面')
+          alert('注册成功,即将跳转至登陆界面')
           setTimeout(()=>{
             this.$router.push('/login')
           },2000)
-        }else{
-          this.$message,error('注册失败，请核对填写的信息')
         }
       })
       },

@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from 'axios'
+import swiper from 'swiper'
 import nav from './views/Register/headerNav.vue'
 Vue.component('header-nav',nav)
 // 导入组件库

@@ -95,7 +95,7 @@
               this.$router.push('/')
             },1500)
           }else{
-            this.$message.error(res.data.message)
+            alert(res.data.message)
           }
 
         })
