@@ -1,4 +1,4 @@
-# vueqd
+# goshopping
 
 ## Project setup
 ```

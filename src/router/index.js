@@ -1,31 +1,19 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// 导入登录
-import login from '../components/Login/index.vue'
-import reg from '../components/Register/index.vue'
-
-
+import login from '../views/Login/index.vue'
+import register from '../views/Register/index.vue'
+import home from '../views/home/Home'
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/login',
-    component: login
-  },
-  //  重定向
-  {
-    path: '/',
-    redirect: '/login'
-  },
-  {
-    path: '/register',
-    component: reg
-  },
- 
+  {path:'/',redirect:'/shopping'},
+  {path:'/login',component:login},
+  {path:'/register',component:register},
+  {path:'/shopping',component:home}
 ]
 
 const router = new VueRouter({
-  routes
+  routes,
 })
 
 export default router
