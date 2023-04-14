@@ -169,6 +169,7 @@ export default {
     },
     tiaozhuan(id) {
       this.$router.push(`/detail/${id}`);
+     
     },
   },
   //   监听路由变化事件

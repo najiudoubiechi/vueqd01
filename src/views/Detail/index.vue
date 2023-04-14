@@ -17,9 +17,9 @@
         <!-- 左侧放大镜区域 -->
         <div class="previewWrap">
           <!--放大镜效果-->
-          <Zoom :imgurl='goods.skuInfo.skuDefaultImg' />
+          <Zoom :imgurl='imgurl'  />
           <!-- 小图列表 -->
-          <ImageList />
+          <ImageList  :imglist='imglist'/>
         </div>
         <!-- 右侧选择区域布局 -->
         <div class="InfoWrap">
@@ -335,16 +335,20 @@
     name: 'Detail',
     data() {
       return {
-        goods:'',
+        goods:{},
+        imgurl:'',
+        imglist:[],
       }
     },
     mounted() {
       this.$axios({
         method:'get',
-        url:`/api/item/${  this.$route.params.id }`
+        url:`/api/item/${this.$route.params.id }`
       }).then(res=>{
         console.log(res.data.data);
         this.goods=res.data.data
+        this.imgurl=this.goods.skuInfo.skuDefaultImg
+        this.imglist=this.goods.skuInfo.skuImageList
       })
     },
     components: {

@@ -2,7 +2,7 @@
   <div class="swiper-container">
     <div class="swiper-wrapper">
       <div class="swiper-slide">
-        <img src="../images/s1.png">
+        <img v-for="item in imglist" :key="item.id" :src="item.imgUrl" >{{imglist}}
       </div>
     </div>
     <div class="swiper-button-next"></div>
@@ -15,6 +15,7 @@
   import Swiper from 'swiper'
   export default {
     name: "ImageList",
+    props:['imglist'],
   }
 </script>
 

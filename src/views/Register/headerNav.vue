@@ -89,13 +89,13 @@ export default {
       sessionStorage.removeItem("userName");
     },
     tz(){
-      if(this.$route.path.indexOf('search')!=-1){
-        console.log('1')
- 	      this.$router.replace(`/search/${this.keyword}`)
+      if(this.$route.name=="search"){
+        if(this.keyword==this.$route.params.id){
+          return
+        }
+        this.$router.replace(`/search/${this.keyword}`);
       }else{
-           console.log('2')
-        	this.$router.push(`/search/${this.keyword}`)
-
+        this.$router.push(`/search/${this.keyword}`);
       }
 	
 	}
