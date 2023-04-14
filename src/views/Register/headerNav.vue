@@ -89,7 +89,6 @@ export default {
       sessionStorage.removeItem("userName");
     },
     tz(){
-      console.log(this.$route)
       if(this.$route.path.indexOf('search')!=-1){
         console.log('1')
  	      this.$router.replace(`/search/${this.keyword}`)

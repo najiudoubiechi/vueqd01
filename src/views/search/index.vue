@@ -72,7 +72,7 @@
                     <a
                       @click.prevent="tiaozhuan(item.id)"
                       title="促销信息，下单即赠送三个月CIBN视频会员卡！【小米电视新品4A 58 火爆预约中】"
-                      >{{ item.title }}</a
+                      > <span v-html="item.title"></span></a
                     >
                   </div>
                   <div class="commit">
@@ -135,10 +135,12 @@ export default {
   name: "Search",
   data() {
     return {
-      listform: {},
+      listform: {
+        keyword: "",
+      },
       //   品牌列表
       pplist: [],
-      keyword: "",
+
       // 属性列表
       attrlist: [],
       // 商品列表
@@ -151,30 +153,29 @@ export default {
     SearchSelector,
   },
   mounted() {
-    this.keyword = this.$route.params.id;
+    this.listform.keyword = this.$route.params.id;
     this.cx();
   },
   methods: {
     cx() {
-      this.$axios
-        .post("/api/list", { keyword: this.$route.params.id })
-        .then((res) => {
-          console.log(res);
-          if (res.data.code === 200) {
-            this.pplist = res.data.data.trademarkList;
-            this.attrlist = res.data.data.attrsList;
-            this.splist = res.data.data.goodsList;
-          }
-        });
+      this.$axios.post("/api/list", this.listform).then((res) => {
+        console.log(res);
+        if (res.data.code === 200) {
+          this.pplist = res.data.data.trademarkList;
+          this.attrlist = res.data.data.attrsList;
+          this.splist = res.data.data.goodsList;
+        }
+      });
     },
     tiaozhuan(id) {
-      this.$router.push(`/detail/${id}`)
+      this.$router.push(`/detail/${id}`);
     },
   },
   //   监听路由变化事件
   watch: {
     $route(to, from) {
       console.log("改变了");
+      this.listform.keyword = this.$route.params.id;
       this.cx();
     },
   },

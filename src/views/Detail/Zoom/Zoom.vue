@@ -12,6 +12,10 @@
 <script>
   export default {
     name: "Zoom",
+    props:['imgurl'],
+    mounted() {
+      console.log(this.imgurl);
+    },
   }
 </script>
 
