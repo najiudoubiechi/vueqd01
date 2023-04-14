@@ -26,7 +26,7 @@
               <router-link class="hovercolor" to="/orders"
                 >我的订单</router-link
               >
-              <router-link class="hovercolor" to="/car">我的购物车</router-link>
+              <router-link class="hovercolor" to="/shopcar">我的购物车</router-link>
               <router-link class="hovercolor" to="/users"
                 >我的尚品汇</router-link
               >

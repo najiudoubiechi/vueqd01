@@ -20,6 +20,7 @@
           <Zoom :imgurl='imgurl'  />
           <!-- 小图列表 -->
           <ImageList  :imglist='imglist'/>
+          <!-- {{imglist}} -->
         </div>
         <!-- 右侧选择区域布局 -->
         <div class="InfoWrap">
@@ -72,12 +73,12 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt">
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input autocomplete="off" class="itxt" v-model="cs.skuNum">
+                <a  class="plus" @click.prevent="cs.skuNum++">+</a>
+                <a  class="mins" @click.prevent="cs.skuNum--">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a @click.prevent="tjgwc()">加入购物车</a>
               </div>
             </div>
           </div>
@@ -335,9 +336,16 @@
     name: 'Detail',
     data() {
       return {
-        goods:{},
+        goods:{skuInfo:{
+          skuName:'',
+        }},
         imgurl:'',
         imglist:[],
+        cs:{
+          skuNum:1,
+          skuID:'',
+        },
+        
       }
     },
     mounted() {
@@ -350,6 +358,18 @@
         this.imgurl=this.goods.skuInfo.skuDefaultImg
         this.imglist=this.goods.skuInfo.skuImageList
       })
+      this.cs.skuID=this.$route.params.id
+    },
+    methods:{
+      tjgwc(){
+        // console.log(this.cs.skuID, this.cs.skuNum);
+        this.$axios.post(`/api/cart/addToCart/${ this.cs.skuID }/${ this.cs.skuNum }`).then(res=>{
+          console.log(res)
+          if(res.data.code===200){
+            this.$message.success('添加成功')
+          }
+        })
+      }
     },
     components: {
       ImageList,

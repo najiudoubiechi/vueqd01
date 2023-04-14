@@ -5,6 +5,7 @@ import register from '../views/Register/index.vue'
 import home from '../views/home/Home'
 import search from '../views/search/index.vue'
 import detail from '../views/Detail/index.vue'
+import shopcar from '../views/ShopCart/index.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -14,6 +15,7 @@ const routes = [
     { path: '/shopping', component: home },
     { path: '/search/:id', component: search, name: 'search', },
     { path: '/detail/:id', component: detail },
+    { path: '/shopcar', component: shopcar },
 ]
 
 const router = new VueRouter({
