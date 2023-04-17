@@ -13,7 +13,7 @@
       <div class="cart-body">
         <ul class="cart-list" v-for="item in carlist" :key="item.id">
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" v-model="item.isChecked" />
+            <input type="checkbox" name="chk_list" v-model="item.isChecked" @change="che(item)" />
           </li>
           <li class="cart-list-con2">
             <img :src="item.imgUrl" />
@@ -26,19 +26,26 @@
             <span class="price">{{ item.cartPrice }}</span>
           </li>
           <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins">-</a>
+            <a
+              href="javascript:void(0)"
+              class="mins"
+              @click.prevent="tj(item, '-')"
+              >-</a
+            >
             <input
               autocomplete="off"
               type="text"
               value="1"
               minnum="1"
               class="itxt"
-              v-model="item.skuNum"
+              v-model="item.changenum"
+              @blur="tj(item, 1)"
             />
-            <a href="javascript:void(0)" class="plus">+</a>
+
+            <a class="plus" @click.prevent="tj(item, '+')">+</a>
           </li>
           <li class="cart-list-con6">
-            <span class="sum">{{ item.cartPrice * item.skuNum }}</span>
+            <span class="sum">{{ item.cartPrice * item.changenum }}</span>
           </li>
           <li class="cart-list-con7">
             <a href="#none" class="sindelet" @click.prevent="del(item.skuId)"
@@ -70,7 +77,7 @@
           <i class="summoney">{{ total }}</i>
         </div>
         <div class="sumbtn">
-          <a class="sum-btn" href="###" target="_blank">结算</a>
+          <a class="sum-btn" href="###" target="_blank" @click.prevent="tz()">结算</a>
         </div>
       </div>
     </div>
@@ -84,42 +91,100 @@ export default {
     return {
       carlist: [
         {
-          cartInfoList: [
-            {
-              cartPrice: "",
-              skuName: "",
-              imgUrl: "",
-              skuNum: "",
-              sourceType: "",
-            },
-          ],
+          cartPrice: "",
+          skuName: "",
+          imgUrl: "",
+          skuNum: "",
+          sourceType: "",
+          changenum: "",
         },
       ],
-      // total:'',
     };
   },
   methods: {
+    che(it){
+      // console.log(it.skuId,it.isChecked);
+   var a=   it.isChecked ? 1:0
+   console.log(a,it.skuId);
+      this.$axios.get(`/api/cart/checkCart/${it.skuId}/${a}`).then((res) => {
+      //  console.log(res);
+       if(res.data.code===200){
+        this.$message.success('状态修改成功')
+       }
+      });
+
+    },
+    tz(){
+      this.$router.push('/trade')
+    },
     del(id) {
       console.log(id);
       this.$axios.delete(`/api/cart/deleteCart/${id}`).then((res) => {
         console.log(res);
         if (res.code === 200) {
           this.$message.success("删除成功");
-         
         }
       });
-      this.sx()
+      this.sx();
     },
-    sx(){
+    sx() {
       this.$axios.get("/api/cart/cartList").then((res) => {
-      console.log(res);
-      this.carlist = res.data.data[0].cartInfoList;
-      // console.log(this.carlist)
-    });
-    }
+        console.log(res);
+        this.carlist = res.data.data[0].cartInfoList;
+        // console.log(this.carlist)
+        this.carlist.forEach((item) => {
+          item.changenum = item.skuNum;
+        });
+      });
+    },
+    // 商品数量加减
+    tj(it, ff) {
+      this.carlist.forEach((item, index) => {
+        if (item.skuId == it.skuId) {
+          if (ff == "+") {
+            var temp = item;
+            temp.changenum++;
+
+            this.carlist.splice(index, 1, temp);
+          } else if (ff == "-") {
+            var temp = item;
+
+            if (temp.changenum <= 0) {
+              this.$message.error("不能再减了哦");
+              temp.changenum = 0;
+              this.carlist.splice(index, 1, temp);
+              return;
+            }
+            temp.changenum--;
+            this.carlist.splice(index, 1, temp);
+          } else {
+            if (it.changenum <= 0) {
+              var temp = item;
+              temp.changenum = 0;
+              this.carlist.splice(index, 1, temp);
+            } else {
+              var temp = item;
+              this.carlist.splice(index, 1, temp);
+            }
+          }
+        }
+      });
+
+      var num = it.changenum - it.skuNum;
+      if (num === 0) {
+        return;
+      } else {
+        console.log(num);
+        this.$axios
+          .post(`/api/cart/addToCart/${it.skuId}/${num}`)
+          .then((res) => {
+            console.log(res);
+          });
+      }
+    },
   },
   mounted() {
-   this.sx()
+    this.sx();
   },
   computed: {
     // 计算属性的 getter

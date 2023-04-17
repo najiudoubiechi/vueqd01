@@ -24,7 +24,7 @@ Vue.prototype.$axios = axios
 axios.defaults.headers['token'] = localStorage.getItem('token')
 axios.interceptors.request.use(config => {
     var tokenstr = sessionStorage.getItem('token')
-    console.log(tokenstr);
+        // console.log(tokenstr);
     config.headers.token = tokenstr
     config.headers.userTempId = ''
     return config
